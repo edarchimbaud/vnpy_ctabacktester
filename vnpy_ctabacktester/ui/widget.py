@@ -69,7 +69,7 @@ class BacktesterManager(QtWidgets.QWidget):
 
     def init_ui(self) -> None:
         """"""
-        self.setWindowTitle("CTA回测")
+        self.setWindowTitle("CTA Backtester")
 
         # Setting Part
         self.class_combo: QtWidgets.QComboBox = QtWidgets.QComboBox()
@@ -100,39 +100,39 @@ class BacktesterManager(QtWidgets.QWidget):
         self.pricetick_line: QtWidgets.QLineEdit = QtWidgets.QLineEdit("0.2")
         self.capital_line: QtWidgets.QLineEdit = QtWidgets.QLineEdit("1000000")
 
-        backtesting_button: QtWidgets.QPushButton = QtWidgets.QPushButton("开始回测")
+        backtesting_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Start backtesting")
         backtesting_button.clicked.connect(self.start_backtesting)
 
-        optimization_button: QtWidgets.QPushButton = QtWidgets.QPushButton("参数优化")
+        optimization_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Optimize parameters")
         optimization_button.clicked.connect(self.start_optimization)
 
-        self.result_button: QtWidgets.QPushButton = QtWidgets.QPushButton("优化结果")
+        self.result_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Optimization results")
         self.result_button.clicked.connect(self.show_optimization_result)
         self.result_button.setEnabled(False)
 
-        downloading_button: QtWidgets.QPushButton = QtWidgets.QPushButton("下载数据")
+        downloading_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Download data")
         downloading_button.clicked.connect(self.start_downloading)
 
-        self.order_button: QtWidgets.QPushButton = QtWidgets.QPushButton("委托记录")
+        self.order_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Orders")
         self.order_button.clicked.connect(self.show_backtesting_orders)
         self.order_button.setEnabled(False)
 
-        self.trade_button: QtWidgets.QPushButton = QtWidgets.QPushButton("成交记录")
+        self.trade_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Trades")
         self.trade_button.clicked.connect(self.show_backtesting_trades)
         self.trade_button.setEnabled(False)
 
-        self.daily_button: QtWidgets.QPushButton = QtWidgets.QPushButton("每日盈亏")
+        self.daily_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Daily P&L")
         self.daily_button.clicked.connect(self.show_daily_results)
         self.daily_button.setEnabled(False)
 
-        self.candle_button: QtWidgets.QPushButton = QtWidgets.QPushButton("K线图表")
+        self.candle_button: QtWidgets.QPushButton = QtWidgets.QPushButton("K-line chart")
         self.candle_button.clicked.connect(self.show_candle_chart)
         self.candle_button.setEnabled(False)
 
-        edit_button: QtWidgets.QPushButton = QtWidgets.QPushButton("代码编辑")
+        edit_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Code editor")
         edit_button.clicked.connect(self.edit_strategy_code)
 
-        reload_button: QtWidgets.QPushButton = QtWidgets.QPushButton("策略重载")
+        reload_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Reload strategy")
         reload_button.clicked.connect(self.reload_strategy_class)
 
         for button in [
@@ -150,16 +150,16 @@ class BacktesterManager(QtWidgets.QWidget):
             button.setFixedHeight(button.sizeHint().height() * 2)
 
         form: QtWidgets.QFormLayout = QtWidgets.QFormLayout()
-        form.addRow("交易策略", self.class_combo)
-        form.addRow("本地代码", self.symbol_line)
-        form.addRow("K线周期", self.interval_combo)
-        form.addRow("开始日期", self.start_date_edit)
-        form.addRow("结束日期", self.end_date_edit)
-        form.addRow("手续费率", self.rate_line)
-        form.addRow("交易滑点", self.slippage_line)
-        form.addRow("合约乘数", self.size_line)
-        form.addRow("价格跳动", self.pricetick_line)
-        form.addRow("回测资金", self.capital_line)
+        form.addRow("Trading strategy", self.class_combo)
+        form.addRow("Local symbol", self.symbol_line)
+        form.addRow("K-period", self.interval_combo)
+        form.addRow("Start date", self.start_date_edit)
+        form.addRow("End date", self.end_date_edit)
+        form.addRow("Commission rate", self.rate_line)
+        form.addRow("Slippage", self.slippage_line)
+        form.addRow("Contract multiplier", self.size_line)
+        form.addRow("Price tick", self.pricetick_line)
+        form.addRow("Backtesting capital", self.capital_line)
 
         result_grid: QtWidgets.QGridLayout = QtWidgets.QGridLayout()
         result_grid.addWidget(self.trade_button, 0, 0)
@@ -192,19 +192,19 @@ class BacktesterManager(QtWidgets.QWidget):
         self.trade_dialog: BacktestingResultDialog = BacktestingResultDialog(
             self.main_engine,
             self.event_engine,
-            "回测成交记录",
+            "Backtest trades",
             BacktestingTradeMonitor
         )
         self.order_dialog: BacktestingResultDialog = BacktestingResultDialog(
             self.main_engine,
             self.event_engine,
-            "回测委托记录",
+            "Backtest orders",
             BacktestingOrderMonitor
         )
         self.daily_dialog: BacktestingResultDialog = BacktestingResultDialog(
             self.main_engine,
             self.event_engine,
-            "回测每日盈亏",
+            "Backtest P&L",
             DailyResultMonitor
         )
 
@@ -303,14 +303,14 @@ class BacktesterManager(QtWidgets.QWidget):
 
     def process_optimization_finished_event(self, event: Event) -> None:
         """"""
-        self.write_log("请点击[优化结果]按钮查看")
+        self.write_log("Please click the [Optimization Results] button to view")
         self.result_button.setEnabled(True)
 
     def start_backtesting(self) -> None:
         """"""
         class_name: str = self.class_combo.currentText()
         if not class_name:
-            self.write_log("请选择要回测的策略")
+            self.write_log("Please select the strategy to backtest")
             return
 
         vt_symbol: str = self.symbol_line.text()
@@ -325,12 +325,12 @@ class BacktesterManager(QtWidgets.QWidget):
 
         # Check validity of vt_symbol
         if "." not in vt_symbol:
-            self.write_log("本地代码缺失交易所后缀，请检查")
+            self.write_log("Local symbol missing exchange suffix, please check")
             return
 
         _, exchange_str = vt_symbol.split(".")
         if exchange_str not in Exchange.__members__:
-            self.write_log("本地代码的交易所后缀不正确，请检查")
+            self.write_log("Incorrect exchange suffix for local symbol, please check")
             return
 
         # Save backtesting parameters
@@ -514,8 +514,8 @@ class BacktesterManager(QtWidgets.QWidget):
         if p.returncode:
             QtWidgets.QMessageBox.warning(
                 self,
-                "启动代码编辑器失败",
-                "请检查是否安装了Visual Studio Code，并将其路径添加到了系统全局变量中！"
+                "Failed to start code editor",
+                "Please check that Visual Studio Code is installed and its path is added to the system global variables!"
             )
 
     def reload_strategy_class(self) -> None:
@@ -538,37 +538,37 @@ class BacktesterManager(QtWidgets.QWidget):
 class StatisticsMonitor(QtWidgets.QTableWidget):
     """"""
     KEY_NAME_MAP: dict = {
-        "start_date": "首个交易日",
-        "end_date": "最后交易日",
+        "start_date": "Start date",
+        "end_date": "End date",
 
-        "total_days": "总交易日",
-        "profit_days": "盈利交易日",
-        "loss_days": "亏损交易日",
+        "total_days": "Total number of trading days",
+        "profit_days": "Profit days",
+        "loss_days": "Loss days",
 
-        "capital": "起始资金",
-        "end_balance": "结束资金",
+        "capital": "Starting capital",
+        "end_balance": "End balance",
 
-        "total_return": "总收益率",
-        "annual_return": "年化收益",
-        "max_drawdown": "最大回撤",
-        "max_ddpercent": "百分比最大回撤",
+        "total_return": "Total return",
+        "annual_return": "Annual return",
+        "max_drawdown": "Max drawdown",
+        "max_ddpercent": "Max drawdown %",
 
-        "total_net_pnl": "总盈亏",
-        "total_commission": "总手续费",
-        "total_slippage": "总滑点",
-        "total_turnover": "总成交额",
-        "total_trade_count": "总成交笔数",
+        "total_net_pnl": "Total net P&L",
+        "total_commission": "Total commission",
+        "total_slippage": "Total slippage",
+        "total_turnover": "Total turnover",
+        "total_trade_count": "Total trade count",
 
-        "daily_net_pnl": "日均盈亏",
-        "daily_commission": "日均手续费",
-        "daily_slippage": "日均滑点",
-        "daily_turnover": "日均成交额",
-        "daily_trade_count": "日均成交笔数",
+        "daily_net_pnl": "Daily net P&L",
+        "daily_commission": "Daily commission",
+        "daily_slippage": "Daily slippage",
+        "daily_turnover": "Daily turnover",
+        "daily_trade_count": "Daily trade count",
 
-        "daily_return": "日均收益率",
-        "return_std": "收益标准差",
-        "sharpe_ratio": "夏普比率",
-        "return_drawdown_ratio": "收益回撤比"
+        "daily_return": "Daily return",
+        "return_std": "Return standard deviation",
+        "sharpe_ratio": "Sharpe ratio",
+        "return_drawdown_ratio": "Return drawdown ratio",
     }
 
     def __init__(self) -> None:
@@ -650,8 +650,8 @@ class BacktestingSettingEditor(QtWidgets.QDialog):
         form: QtWidgets.QFormLayout = QtWidgets.QFormLayout()
 
         # Add vt_symbol and name edit if add new strategy
-        self.setWindowTitle(f"策略参数配置：{self.class_name}")
-        button_text: str = "确定"
+        self.setWindowTitle(f"Strategy parameter configuration:{self.class_name}")
+        button_text: str = "OK"
         parameters: dict = self.parameters
 
         for name, value in parameters.items():
@@ -722,24 +722,24 @@ class BacktesterChart(pg.GraphicsLayoutWidget):
 
         # Create plot widgets
         self.balance_plot = self.addPlot(
-            title="账户净值",
+            title="Balance",
             axisItems={"bottom": DateAxis(self.dates, orientation="bottom")}
         )
         self.nextRow()
 
         self.drawdown_plot = self.addPlot(
-            title="净值回撤",
+            title="Drawdown",
             axisItems={"bottom": DateAxis(self.dates, orientation="bottom")}
         )
         self.nextRow()
 
         self.pnl_plot = self.addPlot(
-            title="每日盈亏",
+            title="P&L",
             axisItems={"bottom": DateAxis(self.dates, orientation="bottom")}
         )
         self.nextRow()
 
-        self.distribution_plot = self.addPlot(title="盈亏分布")
+        self.distribution_plot = self.addPlot(title="P&L distribution")
 
         # Add curves and bars on plot widgets
         self.balance_curve = self.balance_plot.plot(
@@ -835,10 +835,10 @@ class OptimizationSettingEditor(QtWidgets.QDialog):
     For setting up parameters for optimization.
     """
     DISPLAY_NAME_MAP: dict = {
-        "总收益率": "total_return",
-        "夏普比率": "sharpe_ratio",
-        "收益回撤比": "return_drawdown_ratio",
-        "日均盈亏": "daily_net_pnl"
+        "Total return": "total_return",
+        "Sharpe ratio": "sharpe_ratio",
+        "Gain/loss ratio": "return_drawdown_ratio",
+        "Daily net P&L": "daily_net_pnl"
     }
 
     def __init__(
@@ -866,20 +866,20 @@ class OptimizationSettingEditor(QtWidgets.QDialog):
         self.worker_spin: QtWidgets.QSpinBox = QtWidgets.QSpinBox()
         self.worker_spin.setRange(0, 10000)
         self.worker_spin.setValue(0)
-        self.worker_spin.setToolTip("设为0则自动根据CPU核心数启动对应数量的进程")
+        self.worker_spin.setToolTip("Set to 0 to automatically start the corresponding number of processes according to the number of CPU cores.")
 
         grid: QtWidgets.QGridLayout = QtWidgets.QGridLayout()
-        grid.addWidget(QLabel("优化目标"), 0, 0)
+        grid.addWidget(QLabel("Optimization objective"), 0, 0)
         grid.addWidget(self.target_combo, 0, 1, 1, 3)
-        grid.addWidget(QLabel("进程上限"), 1, 0)
+        grid.addWidget(QLabel("Process limit"), 1, 0)
         grid.addWidget(self.worker_spin, 1, 1, 1, 3)
-        grid.addWidget(QLabel("参数"), 2, 0)
-        grid.addWidget(QLabel("开始"), 2, 1)
-        grid.addWidget(QLabel("步进"), 2, 2)
-        grid.addWidget(QLabel("结束"), 2, 3)
+        grid.addWidget(QLabel("Parameters"), 2, 0)
+        grid.addWidget(QLabel("Start"), 2, 1)
+        grid.addWidget(QLabel("Step"), 2, 2)
+        grid.addWidget(QLabel("End"), 2, 3)
 
         # Add vt_symbol and name edit if add new strategy
-        self.setWindowTitle(f"优化参数配置：{self.class_name}")
+        self.setWindowTitle(f"Optimized parameter configuration: {self.class_name}")
 
         validator: QtGui.QDoubleValidator = QtGui.QDoubleValidator()
         row: int = 3
@@ -910,12 +910,12 @@ class OptimizationSettingEditor(QtWidgets.QDialog):
 
             row += 1
 
-        parallel_button: QtWidgets.QPushButton = QtWidgets.QPushButton("多进程优化")
+        parallel_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Multi-process optimization")
         parallel_button.clicked.connect(self.generate_parallel_setting)
         grid.addWidget(parallel_button, row, 0, 1, 4)
 
         row += 1
-        ga_button: QtWidgets.QPushButton = QtWidgets.QPushButton("遗传算法优化")
+        ga_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Genetic algorithm optimization")
         ga_button.clicked.connect(self.generate_ga_setting)
         grid.addWidget(ga_button, row, 0, 1, 4)
 
@@ -989,7 +989,7 @@ class OptimizationResultMonitor(QtWidgets.QDialog):
 
     def init_ui(self) -> None:
         """"""
-        self.setWindowTitle("参数优化结果")
+        self.setWindowTitle("Parameter optimization results")
         self.resize(1100, 500)
 
         # Creat table to show result
@@ -997,7 +997,7 @@ class OptimizationResultMonitor(QtWidgets.QDialog):
 
         table.setColumnCount(2)
         table.setRowCount(len(self.result_values))
-        table.setHorizontalHeaderLabels(["参数", self.target_display])
+        table.setHorizontalHeaderLabels(["Parameters", self.target_display])
         table.setEditTriggers(table.NoEditTriggers)
         table.verticalHeader().setVisible(False)
 
@@ -1020,7 +1020,7 @@ class OptimizationResultMonitor(QtWidgets.QDialog):
             table.setItem(n, 1, target_cell)
 
         # Create layout
-        button: QtWidgets.QPushButton = QtWidgets.QPushButton("保存")
+        button: QtWidgets.QPushButton = QtWidgets.QPushButton("Save")
         button.clicked.connect(self.save_csv)
 
         hbox: QtWidgets.QHBoxLayout = QtWidgets.QHBoxLayout()
@@ -1038,7 +1038,7 @@ class OptimizationResultMonitor(QtWidgets.QDialog):
         Save table data into a csv file
         """
         path, _ = QtWidgets.QFileDialog.getSaveFileName(
-            self, "保存数据", "", "CSV(*.csv)")
+            self, "Save data", "", "CSV(*.csv)")
 
         if not path:
             return
@@ -1046,7 +1046,7 @@ class OptimizationResultMonitor(QtWidgets.QDialog):
         with open(path, "w") as f:
             writer = csv.writer(f, lineterminator="\n")
 
-            writer.writerow(["参数", self.target_display])
+            writer.writerow(["Parameters", self.target_display])
 
             for tp in self.result_values:
                 setting, target_value, _ = tp
@@ -1060,16 +1060,16 @@ class BacktestingTradeMonitor(BaseMonitor):
     """
 
     headers: dict = {
-        "tradeid": {"display": "成交号 ", "cell": BaseCell, "update": False},
-        "orderid": {"display": "委托号", "cell": BaseCell, "update": False},
-        "symbol": {"display": "代码", "cell": BaseCell, "update": False},
-        "exchange": {"display": "交易所", "cell": EnumCell, "update": False},
-        "direction": {"display": "方向", "cell": DirectionCell, "update": False},
-        "offset": {"display": "开平", "cell": EnumCell, "update": False},
-        "price": {"display": "价格", "cell": BaseCell, "update": False},
-        "volume": {"display": "数量", "cell": BaseCell, "update": False},
-        "datetime": {"display": "时间", "cell": BaseCell, "update": False},
-        "gateway_name": {"display": "接口", "cell": BaseCell, "update": False},
+        "tradeid": {"display": "Trade ID ", "cell": BaseCell, "update": False},
+        "orderid": {"display": "Order ID", "cell": BaseCell, "update": False},
+        "symbol": {"display": "Symbol", "cell": BaseCell, "update": False},
+        "exchange": {"display": "Exchange", "cell": EnumCell, "update": False},
+        "direction": {"display": "Direction", "cell": DirectionCell, "update": False},
+        "offset": {"display": "Offset", "cell": EnumCell, "update": False},
+        "price": {"display": "Price", "cell": BaseCell, "update": False},
+        "volume": {"display": "Volume", "cell": BaseCell, "update": False},
+        "datetime": {"display": "Datetime", "cell": BaseCell, "update": False},
+        "gateway_name": {"display": "Gateway name", "cell": BaseCell, "update": False},
     }
 
 
@@ -1079,18 +1079,18 @@ class BacktestingOrderMonitor(BaseMonitor):
     """
 
     headers: dict = {
-        "orderid": {"display": "委托号", "cell": BaseCell, "update": False},
-        "symbol": {"display": "代码", "cell": BaseCell, "update": False},
-        "exchange": {"display": "交易所", "cell": EnumCell, "update": False},
-        "type": {"display": "类型", "cell": EnumCell, "update": False},
-        "direction": {"display": "方向", "cell": DirectionCell, "update": False},
-        "offset": {"display": "开平", "cell": EnumCell, "update": False},
-        "price": {"display": "价格", "cell": BaseCell, "update": False},
-        "volume": {"display": "总数量", "cell": BaseCell, "update": False},
-        "traded": {"display": "已成交", "cell": BaseCell, "update": False},
-        "status": {"display": "状态", "cell": EnumCell, "update": False},
-        "datetime": {"display": "时间", "cell": BaseCell, "update": False},
-        "gateway_name": {"display": "接口", "cell": BaseCell, "update": False},
+        "orderid": {"display": "Order ID", "cell": BaseCell, "update": False},
+        "symbol": {"display": "Symbol", "cell": BaseCell, "update": False},
+        "exchange": {"display": "Exchange", "cell": EnumCell, "update": False},
+        "type": {"display": "Type", "cell": EnumCell, "update": False},
+        "direction": {"display": "Direction", "cell": DirectionCell, "update": False},
+        "offset": {"display": "Offset", "cell": EnumCell, "update": False},
+        "price": {"display": "Price", "cell": BaseCell, "update": False},
+        "volume": {"display": "Volume", "cell": BaseCell, "update": False},
+        "traded": {"display": "Traded", "cell": BaseCell, "update": False},
+        "status": {"display": "Status", "cell": EnumCell, "update": False},
+        "datetime": {"display": "Datetime", "cell": BaseCell, "update": False},
+        "gateway_name": {"display": "Gateway name", "cell": BaseCell, "update": False},
     }
 
 
@@ -1111,17 +1111,17 @@ class DailyResultMonitor(BaseMonitor):
     """
 
     headers: dict = {
-        "date": {"display": "日期", "cell": BaseCell, "update": False},
-        "trade_count": {"display": "成交笔数", "cell": BaseCell, "update": False},
-        "start_pos": {"display": "开盘持仓", "cell": BaseCell, "update": False},
-        "end_pos": {"display": "收盘持仓", "cell": BaseCell, "update": False},
-        "turnover": {"display": "成交额", "cell": FloatCell, "update": False},
-        "commission": {"display": "手续费", "cell": FloatCell, "update": False},
-        "slippage": {"display": "滑点", "cell": FloatCell, "update": False},
-        "trading_pnl": {"display": "交易盈亏", "cell": FloatCell, "update": False},
-        "holding_pnl": {"display": "持仓盈亏", "cell": FloatCell, "update": False},
-        "total_pnl": {"display": "总盈亏", "cell": FloatCell, "update": False},
-        "net_pnl": {"display": "净盈亏", "cell": FloatCell, "update": False},
+        "date": {"display": "Date", "cell": BaseCell, "update": False},
+        "trade_count": {"display": "Trade count", "cell": BaseCell, "update": False},
+        "start_pos": {"display": "Start position", "cell": BaseCell, "update": False},
+        "end_pos": {"display": "End position", "cell": BaseCell, "update": False},
+        "turnover": {"display": "Turnover", "cell": FloatCell, "update": False},
+        "commission": {"display": "Commission", "cell": FloatCell, "update": False},
+        "slippage": {"display": "Slippage", "cell": FloatCell, "update": False},
+        "trading_pnl": {"display": "Trading P&L", "cell": FloatCell, "update": False},
+        "holding_pnl": {"display": "Holding P&L", "cell": FloatCell, "update": False},
+        "total_pnl": {"display": "Total P&L", "cell": FloatCell, "update": False},
+        "net_pnl": {"display": "Net P&L", "cell": FloatCell, "update": False},
     }
 
 
@@ -1199,7 +1199,7 @@ class CandleChartDialog(QtWidgets.QDialog):
 
     def init_ui(self) -> None:
         """"""
-        self.setWindowTitle("回测K线图表")
+        self.setWindowTitle("Backtest K-Line Chart")
         self.resize(1400, 800)
 
         # Create chart widget
@@ -1211,27 +1211,27 @@ class CandleChartDialog(QtWidgets.QDialog):
         self.chart.add_cursor()
 
         # Create help widget
-        text1: str = "红色虚线 —— 盈利交易"
+        text1: str = "Red dotted line - profitable trades"
         label1: QtWidgets.QLabel = QtWidgets.QLabel(text1)
         label1.setStyleSheet("color:red")
 
-        text2: str = "绿色虚线 —— 亏损交易"
+        text2: str = "Green dotted line - losing trades"
         label2: QtWidgets.QLabel = QtWidgets.QLabel(text2)
         label2.setStyleSheet("color:#00FF00")
 
-        text3: str = "黄色向上箭头 —— 买入开仓 Buy"
+        text3: str = "Yellow up arrow - Open long"
         label3: QtWidgets.QLabel = QtWidgets.QLabel(text3)
         label3.setStyleSheet("color:yellow")
 
-        text4: str = "黄色向下箭头 —— 卖出平仓 Sell"
+        text4: str = "Yellow down arrow - Close long"
         label4: QtWidgets.QLabel = QtWidgets.QLabel(text4)
         label4.setStyleSheet("color:yellow")
 
-        text5: str = "紫红向下箭头 —— 卖出开仓 Short"
+        text5: str = "Purple downward arrows - Open short"
         label5: QtWidgets.QLabel = QtWidgets.QLabel(text5)
         label5.setStyleSheet("color:magenta")
 
-        text6: str = "紫红向上箭头 —— 买入平仓 Cover"
+        text6: str = "Purple upward arrows - Close short"
         label6: QtWidgets.QLabel = QtWidgets.QLabel(text6)
         label6.setStyleSheet("color:magenta")
 

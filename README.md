@@ -1,4 +1,4 @@
-# VeighNa框架的CTA投研模块
+# CTA Investment Research Module for the VeighNa Framework
 
 <p align="center">
   <img src ="https://vnpy.oss-cn-shanghai.aliyuncs.com/vnpy-logo.png"/>
@@ -11,23 +11,22 @@
     <img src ="https://img.shields.io/github/license/vnpy/vnpy.svg?color=orange"/>
 </p>
 
-## 说明
+## Description
 
-图形化CTA策略回测模块，基于用户友好的图形界面实现简洁易用的数据下载、历史回测和参数优化等投研功能。
+Graphical CTA strategy backtesting module, based on user-friendly graphical interface to achieve simple and easy-to-use data download, historical backtesting and parameter optimization and other investment research functions.
 
-## 安装
+## Installation
 
-安装环境推荐基于3.3.0版本以上的【[**VeighNa Studio**](https://www.vnpy.com)】。
+The recommended installation environment is based on [[**VeighNa Studio**](https://www.vnpy.com)] above version 3.3.0.
 
-直接使用pip命令：
+Use pip command directly:
 
-```
+```bash
 pip install vnpy_ctabacktester
 ```
 
+Or download the source code, unzip it and run it in cmd:
 
-或者下载源代码后，解压后在cmd中运行：
-
-```
+```bash
 pip install .
 ```

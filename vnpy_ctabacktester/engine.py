@@ -59,14 +59,14 @@ class BacktesterEngine(BaseEngine):
 
     def init_engine(self) -> None:
         """"""
-        self.write_log("初始化CTA回测引擎")
+        self.write_log("Initializing CTA backtesting engine")
 
         self.backtesting_engine = BacktestingEngine()
         # Redirect log from backtesting engine outside.
         self.backtesting_engine.output = self.write_log
 
         self.load_strategy_class()
-        self.write_log("策略文件加载完成")
+        self.write_log("Strategy file loading complete")
 
         self.init_datafeed()
 
@@ -76,7 +76,7 @@ class BacktesterEngine(BaseEngine):
         """
         result: bool = self.datafeed.init(self.write_log)
         if result:
-            self.write_log("数据服务初始化成功")
+            self.write_log("Data service initialized successfully")
 
     def write_log(self, msg: str) -> None:
         """"""
@@ -113,7 +113,7 @@ class BacktesterEngine(BaseEngine):
         try:
             module: ModuleType = importlib.import_module(module_name)
 
-            # 重载模块，确保如果策略文件中有任何修改，能够立即生效。
+            # The reload module ensures that if there are any changes in the strategy file, they take effect immediately.
             importlib.reload(module)
 
             for name in dir(module):
@@ -125,14 +125,14 @@ class BacktesterEngine(BaseEngine):
                 ):
                     self.classes[value.__name__] = value
         except:  # noqa
-            msg: str = f"策略文件{module_name}加载失败，触发异常：\n{traceback.format_exc()}"
+            msg: str = f"Strategy file {module_name} failed to load, triggering an exception:\n{traceback.format_exc()}"
             self.write_log(msg)
 
     def reload_strategy_class(self) -> None:
         """"""
         self.classes.clear()
         self.load_strategy_class()
-        self.write_log("策略文件重载刷新完成")
+        self.write_log("Strategy file reload refresh complete")
 
     def get_strategy_class_names(self) -> list:
         """"""
@@ -185,13 +185,13 @@ class BacktesterEngine(BaseEngine):
 
         engine.load_data()
         if not engine.history_data:
-            self.write_log("策略回测失败，历史数据为空")
+            self.write_log("Strategy backtest failed, historical data is empty")
             return
 
         try:
             engine.run_backtesting()
         except Exception:
-            msg: str = f"策略回测失败，触发异常：\n{traceback.format_exc()}"
+            msg: str = f"Strategy backtest failed, exception triggered:\n{traceback.format_exc()}"
             self.write_log(msg)
 
             self.thread = None
@@ -222,7 +222,7 @@ class BacktesterEngine(BaseEngine):
         setting: dict
     ) -> bool:
         if self.thread:
-            self.write_log("已有任务在运行中，请等待完成")
+            self.write_log("There is already a task running, please wait for it to finish")
             return False
 
         self.write_log("-" * 40)
@@ -328,7 +328,7 @@ class BacktesterEngine(BaseEngine):
 
         # Clear thread object handler.
         self.thread = None
-        self.write_log("多进程参数优化完成")
+        self.write_log("Multi-process parameter optimization complete")
 
         # Put optimization done event
         event: Event = Event(EVENT_BACKTESTER_OPTIMIZATION_FINISHED)
@@ -351,7 +351,7 @@ class BacktesterEngine(BaseEngine):
         max_workers: int
     ) -> bool:
         if self.thread:
-            self.write_log("已有任务在运行中，请等待完成")
+            self.write_log("There is already a task running, please wait for it to finish")
             return False
 
         self.write_log("-" * 40)
@@ -387,12 +387,12 @@ class BacktesterEngine(BaseEngine):
         """
         执行下载任务
         """
-        self.write_log(f"{vt_symbol}-{interval}开始下载历史数据")
+        self.write_log(f"{vt_symbol}-{interval} started downloading historical data")
 
         try:
             symbol, exchange = extract_vt_symbol(vt_symbol)
         except ValueError:
-            self.write_log(f"{vt_symbol}解析失败，请检查交易所后缀")
+            self.write_log(f"{vt_symbol} parsing failed, please check exchange suffix")
             self.thread = None
             return
 
@@ -425,11 +425,11 @@ class BacktesterEngine(BaseEngine):
                 else:
                     self.database.save_bar_data(data)
 
-                self.write_log(f"{vt_symbol}-{interval}历史数据下载完成")
+                self.write_log(f"{vt_symbol}-{interval} historical data download complete")
             else:
-                self.write_log(f"数据下载失败，无法获取{vt_symbol}的历史数据")
+                self.write_log(f"Data download failed to fetch historical data for {vt_symbol}")
         except Exception:
-            msg: str = f"数据下载失败，触发异常：\n{traceback.format_exc()}"
+            msg: str = f"Data download failed, triggered exception:\n{traceback.format_exc()}"
             self.write_log(msg)
 
         # Clear thread object handler.
@@ -443,7 +443,7 @@ class BacktesterEngine(BaseEngine):
         end: datetime
     ) -> bool:
         if self.thread:
-            self.write_log("已有任务在运行中，请等待完成")
+            self.write_log("There is a task in progress. Please wait for completion.")
             return False
 
         self.write_log("-" * 40)
