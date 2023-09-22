@@ -125,7 +125,7 @@ class BacktesterManager(QtWidgets.QWidget):
         self.daily_button.clicked.connect(self.show_daily_results)
         self.daily_button.setEnabled(False)
 
-        self.candle_button: QtWidgets.QPushButton = QtWidgets.QPushButton("K-line chart")
+        self.candle_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Bar chart")
         self.candle_button.clicked.connect(self.show_candle_chart)
         self.candle_button.setEnabled(False)
 
@@ -152,7 +152,7 @@ class BacktesterManager(QtWidgets.QWidget):
         form: QtWidgets.QFormLayout = QtWidgets.QFormLayout()
         form.addRow("Trading strategy", self.class_combo)
         form.addRow("Local symbol", self.symbol_line)
-        form.addRow("K-period", self.interval_combo)
+        form.addRow("Bar period", self.interval_combo)
         form.addRow("Start date", self.start_date_edit)
         form.addRow("End date", self.end_date_edit)
         form.addRow("Commission rate", self.rate_line)
@@ -1199,7 +1199,7 @@ class CandleChartDialog(QtWidgets.QDialog):
 
     def init_ui(self) -> None:
         """"""
-        self.setWindowTitle("Backtest K-Line Chart")
+        self.setWindowTitle("Backtest Bar Chart")
         self.resize(1400, 800)
 
         # Create chart widget
