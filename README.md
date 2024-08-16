@@ -17,7 +17,7 @@ Graphical CTA strategy backtesting module, based on user-friendly graphical inte
 
 ## Installation
 
-The recommended installation environment is based on [[**VeighNa Studio**](https://github.com/edarchimbaud/vnpy)] above version 3.3.0.
+The recommended installation environment is based on [[**VeighNa Studio**](https://github.com/paperswithbacktest/vnpy)] above version 3.3.0.
 
 Use pip command directly:
 
